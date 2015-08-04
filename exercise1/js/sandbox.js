@@ -4,13 +4,13 @@ class Selector {
 
   //Selector constructor
   constructor() {
-    this._module = $('div.module');
+    this._$module = $('div.module');
 
     //I choose this._thirdChild1 for reasons explained in this._runSelector2()
-    this._thirdChild1 = $('#myList > li:eq(2)');
-    this._thirdChild2 = $('#myList > li:nth-child(3)');
-    this._thirdChild3 = $('#myList > li:nth-of-type(3)');
-    this._label = $('label[for = "q"]');
+    this._$thirdChild1 = $('#myList > li:eq(2)');
+    this._$thirdChild2 = $('#myList > li:nth-child(3)');
+    this._$thirdChild3 = $('#myList > li:nth-of-type(3)');
+    this._$label = $('label[for = "q"]');
     this._howManyHidden = $('body')
                             .find(':hidden')
                             .not('script')
@@ -32,7 +32,7 @@ class Selector {
   _runSelector1() {
 
       //ALl div elements that have a class of 'module'
-      console.log(`1. ALl div elements that have a class of 'module': ${this._module}. They are ${this._module.length} in number.`);
+      console.log(`1. ALl div elements that have a class of 'module': ${this._$module}. They are ${this._$module.length} in number.`);
   }
 
   _runSelector2() {
@@ -47,13 +47,13 @@ class Selector {
       *   For nth-of-type, selections are made with siblings taken under consideration. This extra
       *   job of considering siblings is not needed here.
       */
-      console.log(`2. The third item in the #myList unordered list is ${this._thirdChild1} and it says: ${this._thirdChild1.html()}`);
+      console.log(`2. The third item in the #myList unordered list is ${this._$thirdChild1} and it says: ${this._$thirdChild1.html()}`);
   }
 
   _runSelector3() {
 
       //The label for the search input using an attribute selector
-      console.log(`3. The label for the search input is ${this._label} and it says: ${this._label.html()}`);
+      console.log(`3. The label for the search input is ${this._$label} and it says: ${this._$label.html()}`);
   }
 
   _runSelector4() {
