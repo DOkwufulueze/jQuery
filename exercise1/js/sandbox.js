@@ -28,15 +28,13 @@ class Selector {
   }
 
   _runSelector1() {
-    $(() => {
+    
 
       //ALl div elements that have a class of 'module'
       console.log(`1. ALl div elements that have a class of 'module': ${this._module}. They are ${this._module.length} in number.`);
-    });
   }
 
   _runSelector2() {
-    $(() => {
 
       /*  getting third item in the #myList unordered list
       *   The three methods to do this are:
@@ -49,44 +47,36 @@ class Selector {
       *   job of considering siblings is not needed here.
       */
       console.log(`2. The third item in the #myList unordered list is ${this._thirdChild} and it says: ${this._thirdChild.html()}`);
-    });
   }
 
   _runSelector3() {
-    $(() => {
 
       //The label for the search input using an attribute selector
       console.log(`3. The label for the search input is ${this._label} and it says: ${this._label.html()}`);
-    });
   }
 
   _runSelector4() {
-    $(() => {
 
       //How many elements on the page are hidden
       console.log(`4. There are ${this._howManyHidden} hidden elements on this page`);
-    });
   }
 
   _runSelector5() {
-    $(() => {
 
       //How many image elements on the page have an alt attribute
       console.log(`5. There are ${this._howManyAlts} Image elements with the 'alt' attribute on this page`);
-    });
   }
 
   _runSelector6() {
-    $(() => {
 
       /*  All of the odd table rows in the table body. Since jQuery starts from 0, 
       *   tr:odd starts from the second(even) row while tr:even starts from the first(odd) row.
       *   So, I'll use tr:even
       */
       console.log(`6. There are ${this._howManyOddRows} odd table rows on this page`);
-    });
   }
 }
 
-new Selector();
-
+$(() => {
+  new Selector();
+});
