@@ -4,20 +4,20 @@ class Traversal {
 
   //Selector constructor
   constructor() {
-    this._image = $('img');
-    this._searchBox = $('input[name="q"]');
-    this._currentListItem = $('#myList .current');
-    this._specialsSelect = $('#specials select');
-    this._slideshowFirstList = $('#slideshow li:first');
+    this._$image = $('img');
+    this._$searchBox = $('input[name="q"]');
+    this._$currentListItem = $('#myList .current');
+    this._$specialsSelect = $('#specials select');
+    this._$slideshowFirstList = $('#slideshow li:first');
     this._init();
   }
 
   _init() {
-    this._logAltAttribute(this._image);
-    this._traverseToFormFrom(this._searchBox);
-    this._removeCurrentClass(this._currentListItem);
-    this._traverseToButtonFrom(this._specialsSelect);
-    this._useSlideshowFirstList(this._slideshowFirstList);
+    this._logAltAttribute(this._$image);
+    this._traverseToFormFrom(this._$searchBox);
+    this._removeCurrentClass(this._$currentListItem);
+    this._traverseToButtonFrom(this._$specialsSelect);
+    this._useSlideshowFirstList(this._$slideshowFirstList);
   }
 
   _logAltAttribute(images) {
