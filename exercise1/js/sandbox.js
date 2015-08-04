@@ -28,7 +28,6 @@ class Selector {
   }
 
   _runSelector1() {
-    
 
       //ALl div elements that have a class of 'module'
       console.log(`1. ALl div elements that have a class of 'module': ${this._module}. They are ${this._module.length} in number.`);
@@ -80,3 +79,4 @@ class Selector {
 $(() => {
   new Selector();
 });
+
