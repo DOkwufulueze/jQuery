@@ -2,19 +2,21 @@
 
 class Selector {
 
-  //Selector copnstructor
+  //Selector constructor
   constructor() {
     this._module = $('div.module');
-    this._thirdChild = $('#myList > li:eq(2)');
+
+    //I choose this._thirdChild1 for reasons explained in this._runSelector2()
+    this._thirdChild1 = $('#myList > li:eq(2)');
+    this._thirdChild2 = $('#myList > li:nth-child(3)');
+    this._thirdChild3 = $('#myList > li:nth-of-type(3)');
     this._label = $('label[for = "q"]');
     this._howManyHidden = $('body')
-                        .find(':hidden')
-                        .not('script')
-                        .length;
-    this._howManyAlts = $('img[alt]')
-                        .length;
-    this._howManyOddRows = $('tr:even')
-                        .length;
+                            .find(':hidden')
+                            .not('script')
+                            .length;
+    this._howManyAlts = $('img[alt]').length;
+    this._howManyOddRows = $('tr:even').length;
     this._init();
   }
 
@@ -35,9 +37,9 @@ class Selector {
 
   _runSelector2() {
 
-      /*  getting third item in the #myList unordered list
+      /*  Getting third item in the #myList unordered list
       *   The three methods to do this are:
-      *     $('#myList > li:nth-child(3)'), $('#myList > li:eq(2)'), $('#myList > li:nth-of-type(3)')
+      *     $('#myList > li:eq(2)'), $('#myList > li:nth-child(3)'), $('#myList > li:nth-of-type(3)')
       *   I choose $(myList > li:eq(2)) because of its simplicity of expression (shorter code)
       *   and the fact that only the required selector is visited for the search. 
       *   For nth-child, ALL the children are visited no matter the selector given 
@@ -45,7 +47,7 @@ class Selector {
       *   For nth-of-type, selections are made with siblings taken under consideration. This extra
       *   job of considering siblings is not needed here.
       */
-      console.log(`2. The third item in the #myList unordered list is ${this._thirdChild} and it says: ${this._thirdChild.html()}`);
+      console.log(`2. The third item in the #myList unordered list is ${this._thirdChild1} and it says: ${this._thirdChild1.html()}`);
   }
 
   _runSelector3() {
