@@ -120,3 +120,4 @@ class TabbedNavigation {
 $(() => {
   new TabbedNavigation();
 });
+
