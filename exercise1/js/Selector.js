@@ -7,10 +7,10 @@ class Selector {
     this._$module = $('div.module');
 
     //I choose this._thirdChild1 for reasons explained in this._runSelector2()
-    this._$thirdChild1 = $('#myList > li:eq(2)');
+    this._$thirdChild1 = $('#myList > li#myListItem');
     this._$thirdChild2 = $('#myList > li:nth-child(3)');
     this._$thirdChild3 = $('#myList > li:nth-of-type(3)');
-    this._$label = $('label[for = "q"]');
+    this._$label = $('label[for="q"]');
     this._howManyHidden = $('body')
                             .find(':hidden')
                             .not('script')
@@ -39,9 +39,9 @@ class Selector {
 
       /*  Getting third item in the #myList unordered list
       *   The three methods to do this are:
-      *     $('#myList > li:eq(2)'), $('#myList > li:nth-child(3)'), $('#myList > li:nth-of-type(3)')
-      *   I choose $(myList > li:eq(2)) because of its simplicity of expression (shorter code)
-      *   and the fact that only the required selector is visited for the search. 
+      *     $('#myList > li#myListItem'), $('#myList > li:nth-child(3)'), $('#myList > li:nth-of-type(3)')
+      *   I choose $(myList > li#myListItem) because of its simplicity of expression (shorter code)
+      *   and the fact that only the required selector is visited for the search (it goes straight to the element id). 
       *   For nth-child, ALL the children are visited no matter the selector given 
       *   and the one matching the selector in the nth position is selected. 
       *   For nth-of-type, selections are made with siblings taken under consideration. This extra
