@@ -54,7 +54,7 @@ class InputHint {
   }
 
   _isInputHintString(input, label) {
-    if (input.val() === label.text()) {
+    if (input.val().trim() === label.text()) {
       return true;
     } else {
       return false;
@@ -62,7 +62,7 @@ class InputHint {
   }
 
   _isInputEmptyString(input) {
-    if (input.val() === '') {
+    if (input.val().trim() === '') {
       return true;
     } else {
       return false;
