@@ -13,7 +13,7 @@ class TabbedNavigation {
   }
 
   _doTabbedNavigation() {
-    this._insertUnorderedListBefore(this._$module.first());
+    this._insertUnorderedListBefore();
     this._manipulateUnorderedList();
     this._prepareToShowFirstTabAndRelatedModule();
   }
@@ -38,8 +38,8 @@ class TabbedNavigation {
   }
 
   //Inserting the ul before the first .module div
-  _insertUnorderedListBefore(firstModulesObject) {
-    this._$unorderedList.insertBefore(firstModulesObject);
+  _insertUnorderedListBefore() {
+    this._$unorderedList.insertBefore(this._$module.first());
   }
 
   //Manipulating the newly created ul
