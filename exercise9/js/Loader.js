@@ -3,18 +3,18 @@
 class Loader {
 
   //Loader constructor
-  constructor() {
-    this._$headLines = $('div#blog h3');
+  constructor($headLines) {
+    this._$headLines = $headLines;
     this._init();
   }
 
   _init() {
-    this._createTargetDivs(this._$headLines);
+    this._createTargetDivs();
   }
 
-  _createTargetDivs(headLines) {
-    headLines.each((index, element) => {
-      let $targetDiv = $(`<div id=targetDiv${index}> </div>`);
+  _createTargetDivs() {
+    this._$headLines.each((index, element) => {
+      let $targetDiv = $('<div />', { 'id': `targetDiv${index}`});
       $(element).data('targetDiv', $targetDiv);
       this._moveTargetDivToAppropriatePosition($targetDiv, $(element));
     });
@@ -26,7 +26,7 @@ class Loader {
   }
 
   _addEventListenerToHeadLine(element) {
-    element.bind('click', (eventObject) => {
+    element.on('click', (eventObject) => {
       eventObject.preventDefault();
       const url = element.find('a').attr('href');
       const id = `#${url.split('#')[1]}`;
@@ -36,6 +36,7 @@ class Loader {
 }
 
 $(() => {
-  new Loader();
+  const $headLines = $('div#blog h3');
+  new Loader($headLines);
 }); 
 
