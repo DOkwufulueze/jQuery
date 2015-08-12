@@ -3,20 +3,18 @@
 class DisplayManager {
 
   //DisplayManager constructor
-  constructor() {
-    this._$blog = $('#blog');
-    this._$excerptParagraph = $('#blog p.excerpt');
-    this._$headline = $('#blog h3');
+  constructor($blog) {
+    this._$blog = $blog;
     this._init();
   }
 
   _init() {
-    this._addEventListenerToBlog(this._$blog);
+    this._addEventListenerToBlog();
   }
 
-  _addEventListenerToBlog(blog) {
-    blog.on('click', (eventObject) => {
-      this._preventDefaultForATag(eventObject);
+  _addEventListenerToBlog() {
+    this._$blog.on('click', (eventObject) => {
+      eventObject.preventDefault();
       const $target = $(eventObject.target);
       if (this._isHeadlineClicked($target)) {
         this._slideDownTargetExcerptAndSlideUpOthers($target);
@@ -32,18 +30,10 @@ class DisplayManager {
     }
   }
 
-  _preventDefaultForATag(eventObject) {
-    eventObject.preventDefault();
-  }
-
   _slideDownTargetExcerptAndSlideUpOthers(target) {
-    const $targetExcerpt = this._getTargetExcerpt(target);
+    const $targetExcerpt = target.parents('h3').siblings('p.excerpt');
     this._slideUpExcerpts(target);
     this._slideDownExcerpt($targetExcerpt);
-  }
-
-  _getTargetExcerpt(target) {
-    return target.parents('h3').siblings('p.excerpt');
   }
 
   _slideUpExcerpts(target) {
@@ -60,6 +50,7 @@ class DisplayManager {
 }
 
 $(() => {
-  new DisplayManager();
+  const $blog = $('#blog');
+  new DisplayManager($blog);
 });
 
