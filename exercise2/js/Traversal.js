@@ -13,43 +13,43 @@ class Traversal {
   }
 
   _init() {
-    this._logAltAttribute(this._$image);
-    this._traverseToFormFrom(this._$searchBox);
-    this._removeCurrentClass(this._$currentListItem);
-    this._traverseToButtonFrom(this._$specialsSelect);
-    this._useSlideshowFirstList(this._$slideshowFirstList);
+    this._logAltAttribute();
+    this._traverseToFormFrom();
+    this._removeCurrentClass();
+    this._traverseToButtonFrom();
+    this._useSlideshowFirstList();
   }
 
-  _logAltAttribute(images) {
-    images.each((index, image) => {
+  _logAltAttribute() {
+    this._$image.each((index, image) => {
       console.log(`1. Image${index} alt attribute: ${image.alt}`);
     });
   }
 
-  _traverseToFormFrom(element) {
-    const $closestForm = element
-                          .closest('form')
-                          .attr('class', 'searchForm');
+  _traverseToFormFrom() {
+    const $closestForm = this._$searchBox
+      .closest('form')
+      .attr('class', 'searchForm');
     console.log(`2. The Closest Form: class = '${$closestForm.attr('class')}'`);
   }
 
-  _removeCurrentClass(listItem) {
-    listItem
+  _removeCurrentClass() {
+    this._$currentListItem
       .removeClass('current')
       .next()
       .addClass('current');
   }
 
-  _traverseToButtonFrom(select) {
-    const $submitButton = select
-                            .parent()
-                            .next()
-                            .children('input[type="submit"]');
+  _traverseToButtonFrom() {
+    const $submitButton = this._$specialsSelect
+      .parent()
+      .next()
+      .children('input[type="submit"]');
     console.log(`4. Submit button: class = '${$submitButton.attr('class')}'`);
   }
 
-  _useSlideshowFirstList(listItem) {
-    listItem
+  _useSlideshowFirstList() {
+    this._$slideshowFirstList
       .addClass('current')
       .siblings()
       .addClass('disabled');
