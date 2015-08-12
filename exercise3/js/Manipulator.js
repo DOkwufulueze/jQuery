@@ -3,51 +3,55 @@
 class Manipulator {
 
   //Manipulator constructor
-  constructor() {
-    this._$myList = $('#myList');
-    this._$lastModule = $('.module').last();
-    this._$daySelect = $('select[name="day"');
-    this._$existingImages = $('img');
+  constructor($myList, $lastModule, $daySelect, $existingImages) {
+    this._$myList = $myList;
+    this._$lastModule = $lastModule;
+    this._$daySelect = $daySelect;
+    this._$existingImages = $existingImages;
     this._init();
   }
 
   _init() {
-    this._addFiveListItemsTo(this._$myList);
+    this._addFiveListItemsToMyList();
     this._removeOddListItems();
-    this._manipulateLastModuleDiv(this._$lastModule);
-    this._addAnotherDayOptionTo(this._$daySelect);
-    this._addAnotherModuleDivWithImageCopy(this._$lastModule, this._$existingImages);
+    this._manipulateLastModuleDiv();
+    this._addAnotherDayOptionTo();
+    this._addAnotherModuleDivWithImageCopy();
   }
 
-  _addFiveListItemsTo(myList) {
+  _addFiveListItemsToMyList() {
     for (let list = 0; list < 5; list++) {
-      myList.append('<li> </li>');
+      this._$myList.append($('<li />'));
     }
   }
 
-  _removeOddListItems(oddListItems) {
+  _removeOddListItems() {
     const $oddListItems = $('#myList li:even');
     $oddListItems.remove();
   }
 
-  _manipulateLastModuleDiv(lastModule) {
-    lastModule
-      .append('<h2> </h2>')
-      .append('<p> </p>');
+  _manipulateLastModuleDiv() {
+    this._$lastModule
+      .append($('<h2 />'))
+      .append($('<p />'));
   }
 
-  _addAnotherDayOptionTo(daySelect) {
-    daySelect.append('<option value="Wednesday">Wednesday');
+  _addAnotherDayOptionTo() {
+    this._$daySelect.append($('<option value="Wednesday">Wednesday</option>'));
   }
 
-  _addAnotherModuleDivWithImageCopy(lastModule, existingImages) {
+  _addAnotherModuleDivWithImageCopy() {
     const $newModuleDiv = $('<div class="module"> </div>');
-    $newModuleDiv.append(existingImages.clone(true).get(0));
-    $newModuleDiv.insertAfter(lastModule);
+    $newModuleDiv.append(this._$existingImages.clone(true).get(0));
+    $newModuleDiv.insertAfter(this._$lastModule);
   }
 }
 
 $(() => {
-  new Manipulator();
+  const $myList = $('#myList');
+  const $lastModule = $('.module').last();
+  const $daySelect = $('select[name="day"');
+  const $existingImages = $('img');
+  new Manipulator($myList, $lastModule, $daySelect, $existingImages);
 });
 
