@@ -37,11 +37,14 @@ class Manipulator {
   }
 
   _addAnotherDayOptionTo() {
-    this._$daySelect.append($('<option value="Wednesday">Wednesday</option>'));
+    this._$daySelect.append($('<option />', {
+      value: 'Wednesday',
+      text: 'Wednesday',
+    }));
   }
 
   _addAnotherModuleDivWithImageCopy() {
-    const $newModuleDiv = $('<div class="module"> </div>');
+    const $newModuleDiv = $('<div />', {class: 'module'});
     $newModuleDiv.append(this._$existingImages.clone(true).get(0));
     $newModuleDiv.insertAfter(this._$lastModule);
   }
