@@ -3,25 +3,26 @@
 class Navigation {
 
   //Navigation constructor
-  constructor() {
-    this._$dropDown = $('ul#nav li ul');
+  constructor($dropDown) {
+    this._$dropDown = $dropDown;
     this._init();
   }
 
   _init() {
-    this._manipulateDropDownMenu(this._$dropDown);
+    this._manipulateDropDownMenu();
   }
 
-  _manipulateDropDownMenu(dropDown) {
-    dropDown
+  _manipulateDropDownMenu() {
+    this._$dropDown
       .parent('li')
       .hover(() => {
-        dropDown.toggleClass('hover');
+        this._$dropDown.toggleClass('hover');
       });
   }
 }
 
 $(() => {
-  new Navigation();
+  const $dropDown = $('ul#nav li ul');
+  new Navigation($dropDown);
 });
 
