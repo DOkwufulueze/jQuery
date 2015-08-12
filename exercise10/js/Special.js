@@ -3,30 +3,31 @@
 class Special {
 
   //Special constructor
-  constructor() {
-    this._$specials = $('div#specials');
-    this._$targetDiv = $('<div />');
+  constructor($specials, $targetDiv) {
+    this._$specials = $specials;
+    this._$targetDiv = $targetDiv;
+    this.selectItems = this._$specials.find('select');
     this._$cachedReturnedObject = null;
     this._init();
   }
 
   _init() {
-    this._appendTargetDiv(this._$specials);
-    this._bindChangeEvent(this._$specials.find('select'));
-    this._removeSubmitButton(this._$specials.find('li.buttons'));
+    this._appendTargetDiv();
+    this._bindChangeEvent();
+    this._removeSubmitButton();
   }
 
-  _removeSubmitButton(buttonListItem) {
-    buttonListItem.remove();
+  _removeSubmitButton() {
+    this._$specials.find('li.buttons').remove();
   }
 
-  _appendTargetDiv(specials) {
-    specials.append(this._$targetDiv);
+  _appendTargetDiv() {
+    this._$specials.append(this._$targetDiv);
   }
 
-  _bindChangeEvent(element) {
-    element.bind('change', () => {
-      const value = element.val();
+  _bindChangeEvent() {
+    this.selectItems.on('change', () => {
+      const value = this.selectItems.val();
       if(value === ''){
         this._$targetDiv.empty();
       } else {
@@ -67,10 +68,13 @@ class Special {
   _doGenerateHTMLForSpecial(returnedObjectData, value) {
     let targetDiv = this._$targetDiv;
     targetDiv.html('');
-    targetDiv.append(`<h3 style='color:${returnedObjectData.color}'>${returnedObjectData.title}</h3>`);
-    targetDiv.append(`<p>${returnedObjectData.text}</p>`);
+    targetDiv.append($('<h3 />', {
+      'style': `color:${returnedObjectData.color}`,
+      'text': returnedObjectData.title,
+    }));
+    targetDiv.append($('<p />', { 'text': returnedObjectData.text, }));
     const image = this._prepareImageString(returnedObjectData.image);
-    targetDiv.append(`<img src='${image}' />`);
+    targetDiv.append($('<img />', { 'src': image, }));
   }
 
   _prepareImageString(image) {
@@ -82,6 +86,8 @@ class Special {
 }
 
 $(() => {
-  new Special();
+  const $specials = $('div#specials');
+  const $targetDiv = $('<div />');
+  new Special($specials, $targetDiv);
 }); 
 
