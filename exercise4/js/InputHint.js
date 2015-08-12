@@ -3,66 +3,54 @@
 class InputHint {
 
   //InputHint Constructor
-  constructor() {
-    this._$label = $('label[for="q"]');
-    this._$input = $('input[name="q"]');
+  constructor($label, $input) {
+    this._$label = $label;
+    this._$input = $input;
     this._init();
   }
 
   //Entry Point
   _init() {
-    this._implementInputHint(this._$input, this._$label);
+    this._makeInputValueShowLabelText();
   }
 
-  _implementInputHint(input, label) {
-    this._searchInputValueToLabelText(input, label);
-  }
-
-  _searchInputValueToLabelText(input, label) {
-    input
-      .val(label.text())
+  _makeInputValueShowLabelText() {
+    this._$input
+      .val(this._$label.text())
       .addClass('hint')
-      .bind({
-        'focus': () => {this._removeHintText(input, label);},
-        'blur': () => {this._restoreHintText(input, label);},
+      .on({
+        'focus': () => {this._removeHintText();},
+        'blur': () => {this._restoreHintText();},
       })
       .prev('label').remove();
   }
 
-  _removeHintText(input, label) {
-    if (this._isInputHintString(input, label)) {
-      this._performRemovalofHint(input, label);
-    }
-  }
-
-  _restoreHintText(input, label) {
-    if (this._isInputEmptyString(input)) {
-      this._performRestoreOfHint(input, label);
-    }
-  }
-
-  _performRemovalofHint(input, label) {
-    input
+  _removeHintText() {
+    if (this._isInputHintString()) {
+      this._$input
       .val('')
       .removeClass('hint');
+    }
   }
 
-  _performRestoreOfHint(input, label) {
-    input
-      .val(label.text())
-      .addClass('hint');
+  _restoreHintText() {
+    if (this._isInputEmptyString()) {
+      this._$input
+        .val(this._$label.text())
+        .addClass('hint');
+    }
   }
 
-  _isInputHintString(input, label) {
-    if (input.val().trim() === label.text()) {
+  _isInputHintString() {
+    if (this._$input.val().trim() === this._$label.text()) {
       return true;
     } else {
       return false;
     }
   }
 
-  _isInputEmptyString(input) {
-    if (input.val().trim() === '') {
+  _isInputEmptyString() {
+    if (this._$input.val().trim() === '') {
       return true;
     } else {
       return false;
@@ -71,6 +59,8 @@ class InputHint {
 }
 
 $(() => {
-  new InputHint();
+  const $label = $('label[for="q"]');
+  const $input = $('input[name="q"]');
+  new InputHint($label, $input);
 });
 
