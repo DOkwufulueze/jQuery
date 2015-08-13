@@ -97,14 +97,10 @@ class Product {
   }
 
   _showAllIfNoneSelected(checked) {
-    if (checked.length === 0) {
-      this._$productTable
+    checked.length === 0 ? this._$productTable
       .children('div')
       .addClass('revealed')
-      .removeClass('hidden');
-    } else{
-      this._showCheckedDataOnly(checked);
-    }
+      .removeClass('hidden') : this._showCheckedDataOnly(checked);
   }
 
   _showCheckedDataOnly(checked) {
