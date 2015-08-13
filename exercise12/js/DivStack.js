@@ -3,25 +3,25 @@
 class DivStack {
 
   //DivStack constructor
-  constructor() {
-    this._$body = $('body');
-    this._$button = $('<input type="button" value="Add Item" style="float:right;" />');
-    this._$emptyContainer = $('<div class="emptyContainer" style="width:100%;" />');
+  constructor($body, $button, $emptyContainer) {
+    this._$body = $body;
+    this._$button = $button;
+    this._$emptyContainer = $emptyContainer;
     this._init();
   }
 
   _init() {
-    this._appendTo(this._$emptyContainer, this._$button);
-    this._appendTo(this._$body, this._$emptyContainer);
-    this._addEventListener(this._$emptyContainer);
+    this._beginAppending();
+    this._addEventListener();
   }
 
-  _appendTo(container, content) {
-    content.appendTo(container);
+  _beginAppending() {
+    this._$emptyContainer.append(this._$button);
+    this._$body.append(this._$emptyContainer);
   }
 
-  _addEventListener(emptyContainer) {
-    emptyContainer.on('click', (eventObjet) => {
+  _addEventListener() {
+    this._$emptyContainer.on('click', (eventObjet) => {
       const $target = $(eventObjet.target);
       this._useTarget($target);
     });
@@ -35,7 +35,7 @@ class DivStack {
     if (target.not('.emptyContainer').is('div')) {
       this._ManipulateDiv(target);
     } else if (target.is('input')) {
-      this._appendTo(this._$emptyContainer, $(`<div style='width:100%;height:20px;margin-bottom:5px;cursor:pointer;'> DIV NUMBER ${counter} </div>`));
+      this._$emptyContainer.append($('<div />', {'class': 'newDiv','html': `DIV NUMBER ${counter}`}));
       counter += 1;
     }
   }
@@ -58,16 +58,21 @@ class DivStack {
   }
 
   _highlightDiv(target) {
-    target.css({
-      background: '#eeee55',
-      fontWeight: 'bold',
-    });
+    target.addClass('highlightedDiv');
   }
 }
 
 
 let counter = 1;
 $(() => {
-  new DivStack();
+  const $body = $('body');
+  const $button = $('<input />', {
+    'type': 'button',
+    'value': 'Add Item',
+    'class': 'addButton',
+  });
+
+  const $emptyContainer = $('<div />', {'class': 'emptyContainer', });
+  new DivStack($body, $button, $emptyContainer);
 }); 
 

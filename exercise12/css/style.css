@@ -336,3 +336,35 @@ margin: 15px 0;
 	z-index: 100;
 	
 }
+
+
+
+
+
+
+
+
+
+.newDiv {
+	width: 100%;
+	height: 20px;
+	margin-bottom: 5px;
+	cursor: pointer;
+}
+
+.highlightedDiv {
+	background: #eeee55;
+  font-weight: bold;
+}
+
+.addButton {
+	float: right;
+}
+
+.emptyContainer {
+	width: 100%;
+}
+
+
+
+
