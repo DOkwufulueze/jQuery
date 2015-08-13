@@ -41,15 +41,7 @@ class DivStack {
   }
 
   _ManipulateDiv(target) {
-    if (this._isLastDiv(target)) {
-      this._removeDiv(target);
-    } else {
-      this._highlightDiv(target);
-    }
-  }
-
-  _isLastDiv(target) {
-    return target.is(this._$emptyContainer.children('div').last()) ? true : false;
+    target.is(this._$emptyContainer.children('div').last()) ? this._removeDiv(target) : this._highlightDiv(target);
   }
 
   _removeDiv(target) {
