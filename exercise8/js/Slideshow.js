@@ -25,11 +25,7 @@ class Slideshow {
 
   _addNavigationArea() {
     this._$navigation
-    .css({
-      background: '#bababa',
-      width: '100%',
-      marginBottom: '30px',
-    })
+    .addClass('navigationArea')
     .insertAfter(this._$slideshowArea);
   }
 
@@ -39,7 +35,7 @@ class Slideshow {
   }
 
   _beginSlideshow() {
-    this._$allButTheFirstListItem.css('display', 'none');
+    this._$allButTheFirstListItem.addClass('hidden');
     this._showSlideShowSizeInNavigation();
     this._$firstSlideItem
       .delay(3500)
@@ -81,7 +77,7 @@ class Slideshow {
 let nextItem = 0;
 $(() => {
   const $slideshowArea = $('ul#slideshow');
-  $slideshowArea.css({ 'height': '400px', });
+  $slideshowArea.addClass('slideshowArea');
   const $navigation = $('<div />', {'class': 'navigation',});
   new Slideshow($slideshowArea, $navigation);
 });
