@@ -16,21 +16,21 @@ class Loader {
     this._$headLines.each((index, element) => {
       let $targetDiv = $('<div />', { 'id': `targetDiv${index}`});
       $(element).data('targetDiv', $targetDiv);
-      this._moveTargetDivToAppropriatePosition($targetDiv, $(element));
+      this._moveDivToPosition($targetDiv, $(element));
     });
   }
 
-  _moveTargetDivToAppropriatePosition(targetDiv, element) {
+  _moveDivToPosition(targetDiv, element) {
     targetDiv.insertAfter(element);
     this._addEventListenerToHeadLine(element);
   }
 
   _addEventListenerToHeadLine(element) {
     element.on('click', (eventObject) => {
-      eventObject.preventDefault();
       const url = element.find('a').attr('href');
       const id = `#${url.split('#')[1]}`;
       element.data('targetDiv').load(`data/blog.html ${id}`);
+      eventObject.preventDefault();
     });
   }
 }
