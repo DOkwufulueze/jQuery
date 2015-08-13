@@ -28,11 +28,7 @@ class Special {
   _bindChangeEvent() {
     this.selectItems.on('change', () => {
       const value = this.selectItems.val();
-      if(value === ''){
-        this._$targetDiv.empty();
-      } else {
-        this._checkIfJSONObjectIsCached(value);
-      }
+      value === '' ? this._$targetDiv.empty() : this._checkIfJSONObjectIsCached(value);
     });
   }
 
@@ -59,29 +55,23 @@ class Special {
   _generateHTMLForSpecial(returnedObject, value) {
     if (returnedObject[value]) {
       const returnedObjectData = returnedObject[value];
-      this._doGenerateHTMLForSpecial(returnedObjectData, value);
+      const targetDiv = this._$targetDiv;
+      targetDiv.html('');
+      targetDiv.append($('<h3 />', {
+        'style': `color:${returnedObjectData.color}`,
+        'text': returnedObjectData.title,
+      }));
+      
+      targetDiv.append($('<p />', { 'text': returnedObjectData.text, }));
+      const image = this._prepareImageString(returnedObjectData.image);
+      targetDiv.append($('<img />', { 'src': image, }));
     } else {
       alert(`:::No Specials for ${value}`);
     }
   }
 
-  _doGenerateHTMLForSpecial(returnedObjectData, value) {
-    let targetDiv = this._$targetDiv;
-    targetDiv.html('');
-    targetDiv.append($('<h3 />', {
-      'style': `color:${returnedObjectData.color}`,
-      'text': returnedObjectData.title,
-    }));
-    targetDiv.append($('<p />', { 'text': returnedObjectData.text, }));
-    const image = this._prepareImageString(returnedObjectData.image);
-    targetDiv.append($('<img />', { 'src': image, }));
-  }
-
   _prepareImageString(image) {
-    if (image.charAt('0') === '/') {
-      image = image.substring(1);
-    }
-    return image;
+    return image.charAt('0') === '/' ? image.substring(1) : image;
   }
 }
 
