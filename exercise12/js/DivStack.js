@@ -10,6 +10,7 @@ class DivStack {
     this._init();
   }
 
+  //Entry Point
   _init() {
     this._beginAppending();
     this._addEventListener();
