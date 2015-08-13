@@ -60,12 +60,7 @@ class Product {
 
   _useTarget(target) {
     const id = target.val().replace('_', ' ');
-    if (target.get(0).checked) {
-      this._pushAppropriateDataToRelevantArrays(id);
-    } else {
-      this._removeAppropriateDataFromRelevantArrays(id);
-    }
-
+    target.get(0).checked ? this._pushAppropriateDataToRelevantArrays(id) : this._removeAppropriateDataFromRelevantArrays(id);
     this._displayProducts();
   }
 
@@ -92,7 +87,8 @@ class Product {
   _hideAllRows() {
     this._$productTable
       .children('div')
-      .css('display', 'none');
+      .removeClass('revealed')
+      .addClass('hidden');
   }
 
   _displayProducts() {
@@ -104,7 +100,8 @@ class Product {
     if (checked.length === 0) {
       this._$productTable
       .children('div')
-      .css('display', 'block');
+      .addClass('revealed')
+      .removeClass('hidden');
     } else{
       this._showCheckedDataOnly(checked);
     }
@@ -113,11 +110,7 @@ class Product {
   _showCheckedDataOnly(checked) {
     this._hideAllRows();
     const available = this._$availableProducts.get(0).checked ? 'product0' : '';
-    if (available !== '') {
-      this._showProductsThatAreAvailable(available);
-    } else {
-      this._showProductsRegardlessOfAvailableStatus();
-    }
+    available !== '' ? this._showProductsThatAreAvailable(available) : this._showProductsRegardlessOfAvailableStatus();
   }
 
   _showProductsThatAreAvailable(available) {
@@ -137,7 +130,8 @@ class Product {
     this._checkedColorArray.forEach((colorId) => {
       colorId = colorId.replace(' ', '_');
       $(`div.${colorId}.${available}`)
-        .css('display', 'block');
+        .removeClass('hidden')
+        .addClass('revealed');
       i += this._isSelectionExist($(`div.${colorId}.${available}`)) ? 1 : 0;
     });
 
@@ -151,7 +145,8 @@ class Product {
         id = id.replace(' ', '_');
         colorId = colorId.replace(' ', '_');
         $(`div.${id}.${colorId}.${available}`)
-          .css('display', 'block');
+          .removeClass('hidden')
+          .addClass('revealed');
         i += this._isSelectionExist($(`div.${id}.${colorId}.${available}`)) ? 1 : 0;
       });
     });
@@ -164,7 +159,8 @@ class Product {
     this._checkedNavigationArray.forEach((id) => {
       id = id.replace(' ', '_');
       $(`div.${id}.${available}`)
-        .css('display', 'block');
+        .removeClass('hidden')
+        .addClass('revealed');
       i += this._isSelectionExist($(`div.${id}.${available}`)) ? 1 : 0;
     });
 
@@ -174,7 +170,8 @@ class Product {
   _showAvailableProducts(available) {
     let i = 0;
     $(`div.${available}`)
-      .css('display', 'block');
+      .removeClass('hidden')
+      .addClass('revealed');
     i += this._isSelectionExist($(`div.${available}`)) ? 1 : 0;
     this._informOnHowMany(i);
   }
@@ -194,7 +191,8 @@ class Product {
     this._checkedColorArray.forEach((colorId) => {
       colorId = colorId.replace(' ', '_');
       $(`div.${colorId}`)
-        .css('display', 'block');
+        .removeClass('hidden')
+        .addClass('revealed');
       i += this._isSelectionExist($(`div.${colorId}`)) ? 1 : 0;
     });
 
@@ -208,7 +206,8 @@ class Product {
         id = id.replace(' ', '_');
         colorId = colorId.replace(' ', '_');
         $(`div.${id}.${colorId}`)
-          .css('display', 'block');
+          .removeClass('hidden')
+          .addClass('revealed');
         i += this._isSelectionExist($(`div.${id}.${colorId}`)) ? 1 : 0;
       });
     });
@@ -221,7 +220,8 @@ class Product {
     this._checkedNavigationArray.forEach((id) => {
       id = id.replace(' ', '_');
       $(`div.${id}`)
-        .css('display', 'block');
+        .removeClass('hidden')
+        .addClass('revealed');
       i += this._isSelectionExist($(`div.${id}`)) ? 1 : 0;
     });
 
@@ -233,13 +233,10 @@ class Product {
   }
 
   _informOnHowMany(selection) {
-    if (selection === 0) {
-      this._$emptyReporter
-        .css('display', 'block')
-        .appendTo(this._$productTable);
-    } else {
-      this._$emptyReporter.css('display', 'none');
-    }
+    selection === 0 ? this._$emptyReporter
+      .removeClass('hidden')
+      .addClass('revealed')
+      .appendTo(this._$productTable) : this._$emptyReporter.removeClass('revealed').addClass('hidden');
   }
 
   _doLoadProducts(returnedObject) {
@@ -313,6 +310,7 @@ $(() => {
   const $emptyReporter = $('<div />', {
     'id': 'emptyReporter',
     'text': ':::No Product to Show for your selected Combination.',
+    'class': 'hidden',
   });
   
   const $availableProductsLabel = $('<label />', {

@@ -365,7 +365,6 @@ margin: 15px 0;
 }
 
 #emptyReporter {
-	display: none;
 	float: left;
 	clear: none;
 	width: 100%;
@@ -394,5 +393,13 @@ div {
 .grid img {
 	height: auto;
 	width: 150px;
+}
+
+.hidden {
+	display: none;
+}
+
+.revealed {
+	display: block;
 }
 
