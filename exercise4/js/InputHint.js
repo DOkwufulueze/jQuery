@@ -42,11 +42,11 @@ class InputHint {
   }
 
   _isInputHintString() {
-    return this._$input.val().trim() === this._$label.text() ? true : false;
+    return this._$input.val().trim() === this._$label.text();
   }
 
   _isInputEmptyString() {
-    return this._$input.val().trim() === '' ? true : false;
+    return this._$input.val().trim() === '';
   }
 }
 
