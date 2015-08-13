@@ -3,23 +3,16 @@
 class Product {
 
   //Product constructor
-  constructor() {
-    this._$body = $('body');
-    this._$navigations = $('<div id="navigations" style="float:left;clear:none;width:150px;" />');
-    this._$navigation = $('<div id="navigation" style="float:left;clear:both;width:150px;margin-bottom:30px;" />');
-    this._$colorNavigation = $('<div id="colorNavigation" style="float:left;clear:none;width:150px;margin-bottom:30px;" />');
-    this._$availableNavigation = $('<div id="availableNavigation" style="float:left;clear:none;width:150px;margin-bottom:30px;" />');
-    this._$availableProductsLabel = $('<label for="availableProducts" > Available Products </label>');
-    this._$availableProducts = $('<input type="checkbox" id="availableProducts" value="product1" />');
-    this._$productTable = $('<div id="product" style="float:left;clear:none;width:700px;" />');
-    this._$emptyReporter = $('<div style="display:none;float:left;clear:none;width:100%;background:#bababa;color:#5a1111;">:::No Product to Show for your selected Combination.</div>');
-    this._$heading = {
-      "name":"S/N",
-      "url":"PRODUCT IMAGE",
-      "color":"COLOUR",
-      "brand":"BRAND",
-      "sold_out":"AVAILABLE",
-    };
+  constructor($body, $navigations, $navigation, $colorNavigation, $availableNavigation, $productTable, $emptyReporter, $availableProductsLabel, $availableProducts) {
+    this._$body = $body;
+    this._$navigations = $navigations;
+    this._$navigation = $navigation;
+    this._$colorNavigation = $colorNavigation;
+    this._$availableNavigation = $availableNavigation;
+    this._$productTable = $productTable;
+    this._$emptyReporter = $emptyReporter;    
+    this._$availableProductsLabel = $availableProductsLabel;
+    this._$availableProducts = $availableProducts;
     this._navigationArray = [];
     this._checkedNavigationArray = [];
     this._colorArray = [];
@@ -34,23 +27,18 @@ class Product {
   }
 
   _beginProductManipulation() {
-    this._appendRow(this._fillRowWithColumns(this._$heading, '40px'));
-    this._addTo(this._$body, this._$navigations);
-    this._addTo(this._$navigations, this._$navigation);
-    this._addTo(this._$navigations, this._$colorNavigation);
-    this._addTo(this._$availableNavigation, this._$availableProductsLabel);
-    this._addTo(this._$availableNavigation, this._$availableProducts);
-    this._addTo(this._$navigations, this._$availableNavigation);
-    this._addTo(this._$body, this._$productTable);
-    this._loadProducts(this._$productTable);
-    this._addEventListener(this._$body);
+    this._$body.append(this._$navigations);
+    this._$navigations.append(this._$navigation);
+    this._$navigations.append(this._$colorNavigation);
+    this._$availableNavigation.append(this._$availableProductsLabel);
+    this._$availableNavigation.append(this._$availableProducts);
+    this._$navigations.append(this._$availableNavigation);
+    this._$body.append(this._$productTable);
+    this._loadProducts();
+    this._addEventListenerToBody();
   }
 
-  _addTo(container, contained) {
-    contained.appendTo(container);
-  }
-
-  _loadProducts(productTable) {
+  _loadProducts() {
     $.ajax({
       type: 'get',
       dataType: 'json',
@@ -61,8 +49,8 @@ class Product {
     });
   }
 
-  _addEventListener(element) {
-    element.bind('click', (eventObject) => {
+  _addEventListenerToBody() {
+    this._$body.bind('click', (eventObject) => {
       const $target = $(eventObject.target);
       if ($target.is('input')) {
         this._useTarget($target);
@@ -71,45 +59,43 @@ class Product {
   }
 
   _useTarget(target) {
-    const id = target.val();
+    const id = target.val().replace('_', ' ');
     if (target.get(0).checked) {
       this._pushAppropriateDataToRelevantArrays(id);
     } else {
       this._removeAppropriateDataFromRelevantArrays(id);
     }
-    this._displayProducts(id);
+
+    this._displayProducts();
   }
 
   _pushAppropriateDataToRelevantArrays(id) {
-    this._pushDataToArray(id.replace('_', ' '), this._checkedNavigationArray, this._navigationArray);
-    this._pushDataToArray(id.replace('_', ' '), this._checkedColorArray, this._colorArray);
-  }
+    if ($.inArray(id, this._navigationArray) >= 0){
+      this._checkedNavigationArray.push(id);
+    }
 
-  _removeAppropriateDataFromRelevantArrays(id) {
-    this._removeDataFromArray(id.replace('_', ' '), this._checkedNavigationArray, this._navigationArray);
-    this._removeDataFromArray(id.replace('_', ' '), this._checkedColorArray, this._colorArray);
-  }
-
-  _pushDataToArray(id, array, pivot) {
-    if ($.inArray(id, pivot) >= 0){
-      array.push(id);
+    if ($.inArray(id, this._colorArray) >= 0){
+      this._checkedColorArray.push(id);
     }
   }
 
-  _removeDataFromArray(id, array, pivot) {
-    const index = array.indexOf(id);
-    if ($.inArray(id, pivot) >= 0){
-      array.splice(index, 1);
+  _removeAppropriateDataFromRelevantArrays(id) {
+    if ($.inArray(id, this._navigationArray) >= 0){
+      this._checkedNavigationArray.splice(this._checkedNavigationArray.indexOf(id), 1);
+    }
+
+    if ($.inArray(id, this._colorArray) >= 0){
+      this._checkedColorArray.splice(this._checkedColorArray.indexOf(id), 1);
     }
   }
 
   _hideAllRows() {
     this._$productTable
-      .children('div:gt(0)')
+      .children('div')
       .css('display', 'none');
   }
 
-  _displayProducts(id) {
+  _displayProducts() {
     const checked = $('input:checked');
     this._showAllIfNoneSelected(checked);
   }
@@ -117,7 +103,7 @@ class Product {
   _showAllIfNoneSelected(checked) {
     if (checked.length === 0) {
       this._$productTable
-      .children('div:gt(0)')
+      .children('div')
       .css('display', 'block');
     } else{
       this._showCheckedDataOnly(checked);
@@ -149,9 +135,10 @@ class Product {
   _showAvailableProductsByColorOnly(available) {
     let i = 0;
     this._checkedColorArray.forEach((colorId) => {
-      $(`div.${colorId.replace(' ', '_')}.${available.replace(' ', '_')}`)
+      colorId = colorId.replace(' ', '_');
+      $(`div.${colorId}.${available}`)
         .css('display', 'block');
-      i += this._isSelectionExist($(`div.${colorId.replace(' ', '_')}.${available.replace(' ', '_')}`)) ? 1 : 0;
+      i += this._isSelectionExist($(`div.${colorId}.${available}`)) ? 1 : 0;
     });
 
     this._informOnHowMany(i);
@@ -161,9 +148,11 @@ class Product {
     let i = 0;
     this._checkedNavigationArray.forEach((id) => {
       this._checkedColorArray.forEach((colorId) => {
-        $(`div.${id.replace(' ', '_')}.${colorId.replace(' ', '_')}.${available.replace(' ', '_')}`)
+        id = id.replace(' ', '_');
+        colorId = colorId.replace(' ', '_');
+        $(`div.${id}.${colorId}.${available}`)
           .css('display', 'block');
-        i += this._isSelectionExist($(`div.${id.replace(' ', '_')}.${colorId.replace(' ', '_')}.${available.replace(' ', '_')}`)) ? 1 : 0;
+        i += this._isSelectionExist($(`div.${id}.${colorId}.${available}`)) ? 1 : 0;
       });
     });
 
@@ -173,9 +162,10 @@ class Product {
   _showAvailableProductsByBrandOnly(available) {
     let i = 0;
     this._checkedNavigationArray.forEach((id) => {
-      $(`div.${id.replace(' ', '_')}.${available.replace(' ', '_')}`)
+      id = id.replace(' ', '_');
+      $(`div.${id}.${available}`)
         .css('display', 'block');
-      i += this._isSelectionExist($(`div.${id.replace(' ', '_')}.${available.replace(' ', '_')}`)) ? 1 : 0;
+      i += this._isSelectionExist($(`div.${id}.${available}`)) ? 1 : 0;
     });
 
     this._informOnHowMany(i);
@@ -183,10 +173,9 @@ class Product {
 
   _showAvailableProducts(available) {
     let i = 0;
-    $(`div.${available.replace(' ', '_')}`)
+    $(`div.${available}`)
       .css('display', 'block');
-    i += this._isSelectionExist($(`div.${available.replace(' ', '_')}`)) ? 1 : 0;
-
+    i += this._isSelectionExist($(`div.${available}`)) ? 1 : 0;
     this._informOnHowMany(i);
   }
 
@@ -203,9 +192,10 @@ class Product {
   _showProductsByColorOnlyRegardlessOfAvailableStatus() {
     let i = 0;
     this._checkedColorArray.forEach((colorId) => {
-      $(`div.${colorId.replace(' ', '_')}`)
+      colorId = colorId.replace(' ', '_');
+      $(`div.${colorId}`)
         .css('display', 'block');
-      i += this._isSelectionExist($(`div.${colorId.replace(' ', '_')}`)) ? 1 : 0;
+      i += this._isSelectionExist($(`div.${colorId}`)) ? 1 : 0;
     });
 
     this._informOnHowMany(i);
@@ -215,9 +205,11 @@ class Product {
     let i = 0;
     this._checkedNavigationArray.forEach((id) => {
       this._checkedColorArray.forEach((colorId) => {
-        $(`div.${id.replace(' ', '_')}.${colorId.replace(' ', '_')}`)
+        id = id.replace(' ', '_');
+        colorId = colorId.replace(' ', '_');
+        $(`div.${id}.${colorId}`)
           .css('display', 'block');
-        i += this._isSelectionExist($(`div.${id.replace(' ', '_')}.${colorId.replace(' ', '_')}`)) ? 1 : 0;
+        i += this._isSelectionExist($(`div.${id}.${colorId}`)) ? 1 : 0;
       });
     });
 
@@ -227,9 +219,10 @@ class Product {
   _showProductsByBrandOnlyRegardlessOfAvailableStatus() {
     let i = 0;
     this._checkedNavigationArray.forEach((id) => {
-      $(`div.${id.replace(' ', '_')}`)
+      id = id.replace(' ', '_');
+      $(`div.${id}`)
         .css('display', 'block');
-      i += this._isSelectionExist($(`div.${id.replace(' ', '_')}`)) ? 1 : 0;
+      i += this._isSelectionExist($(`div.${id}`)) ? 1 : 0;
     });
 
     this._informOnHowMany(i);
@@ -257,34 +250,52 @@ class Product {
 
   _addObjectData(theObject) {
     const brand = theObject.brand;
+    const modifiedBrand = brand.replace(' ', '_');
     const color = theObject.color;
-    const available = theObject.sold_out;
-    this._checkAndAddIfNotInArray(brand, this._navigationArray, brand.replace(' ', '_'), this._$navigation);
-    this._checkAndAddIfNotInArray(color, this._colorArray, color.replace(' ', '_'), this._$colorNavigation);
-    this._appendRow(this._fillRowWithColumns(theObject, '130px'));
-  }
-
-  _checkAndAddIfNotInArray(item, array, modifiedItemText, DOMElement) {
-    if ($.inArray(item, array) < 0) {
-      array.push(item);
-      DOMElement.append(`<div style='clear:both;'><label for='${modifiedItemText}' style='clear:none;float:left;'>${item}</label><input style='clear:none;float:left;' type='checkbox' name='${modifiedItemText}' id='${modifiedItemText}' value='${modifiedItemText}' /></div>`);
+    const modifiedColor = color.replace(' ', '_');
+    if ($.inArray(brand, this._navigationArray) < 0) {
+      this._navigationArray.push(brand);
+      this._$navigation.append(this._getNavigationItem(brand, modifiedBrand));
     }
+
+    if ($.inArray(color, this._colorArray) < 0) {
+      this._colorArray.push(color);
+      this._$colorNavigation.append(this._getNavigationItem(color, modifiedColor));
+    }
+
+    this._addObjectToGrid(theObject);
   }
 
-  _fillRowWithColumns(theObject, height) {
-    const $row = $(`<div style='height:${height};border-bottom:1px solid #bababa;' />`);
-    this._appendColumnsToRow($row, theObject);
-    $row.attr('class', theObject.brand.replace(' ', '_'));
-    $row.addClass(theObject.color);
-    $row.addClass(`product${theObject.sold_out}`);
-    return $row;
+  _getNavigationItem(item, modifiedItemText) {
+    return $('<div />')
+      .append($('<label />', {
+        'for': modifiedItemText,
+        'class': 'gridLabel',
+        'text': item,
+      }))
+      .append($('<input />', {
+        'for': modifiedItemText,
+        'class': 'gridInput',
+        'type': 'checkbox',
+        'name': modifiedItemText,
+        'id': modifiedItemText,
+        'value': modifiedItemText,
+      }));
   }
 
-  _appendColumnsToRow(row, theObject) {
-    Object.keys(theObject).forEach((key) => {
-      let value = key === 'sold_out' ? (theObject[key] === 'AVAILABLE' ? "AVAILABLE" : (theObject[key] === '1' ? "NO" : "YES")) : (key === 'url' ? (theObject[key] === 'PRODUCT IMAGE' ? "PRODUCT IMAGE" : `<img src='images/${theObject[key]}' style='width:120px;height:120px;'`) : theObject[key]) ;
-      row.append(`<div style='float:left;clear:none;width:130px;margin-right:5px;'>${value}</div>`);
+  _addObjectToGrid(theObject) {
+    const color = theObject.color;
+    const available = theObject.sold_out === '1' ? 'NO' : 'YES';
+    const image = $('<img />', {
+      'src': `images/${theObject.url}`,
     });
+
+    const $objectDiv = $('<div />', { 'class': 'grid', });
+    $objectDiv.addClass(theObject.brand.replace(' ', '_'));
+    $objectDiv.addClass(theObject.color);
+    $objectDiv.addClass(`product${theObject.sold_out}`);
+    $objectDiv.html(image);
+    this._$productTable.append($objectDiv);
   }
 
   _appendRow(row) {
@@ -293,6 +304,28 @@ class Product {
 }
 
 $(() => {
-  new Product();
+  const $body = $('body');
+  const $navigations = $('<div />', { 'id': 'navigations', });
+  const $navigation = $('<div />', { 'id': 'navigation', });
+  const $colorNavigation = $('<div />', { 'id': 'colorNavigation', });
+  const $availableNavigation = $('<div />', { 'id': 'availableNavigation', });
+  const $productTable = $('<div />', { 'id': 'product', });
+  const $emptyReporter = $('<div />', {
+    'id': 'emptyReporter',
+    'text': ':::No Product to Show for your selected Combination.',
+  });
+  
+  const $availableProductsLabel = $('<label />', {
+    'for': 'availableProducts',
+    'text': 'Available Products',
+  });
+
+  const $availableProducts = $('<input />', {
+    'type': 'checkbox',
+    'id': 'availableProducts',
+    'value': 'product1',
+  });
+
+  new Product($body, $navigations, $navigation, $colorNavigation, $availableNavigation, $productTable, $emptyReporter, $availableProductsLabel, $availableProducts);
 }); 
 

@@ -336,3 +336,63 @@ margin: 15px 0;
 	z-index: 100;
 	
 }
+
+
+
+
+
+
+
+
+
+#navigations {
+	float: left;
+	clear: none;
+	width: 140px;
+}
+
+#navigation, #colorNavigation, #availableNavigation {
+	float: left;
+	clear: both;
+	width: 140px;
+	margin-bottom: 30px;
+}
+
+#product {
+	float: left;
+	clear: none;
+	width: 650px;
+}
+
+#emptyReporter {
+	display: none;
+	float: left;
+	clear: none;
+	width: 100%;
+	background: #bababa;
+	color: #5a1111;
+}
+
+div {
+	clear: both;
+}
+
+.gridLabel, .gridInput {
+	clear: none;
+	float: left;
+}
+
+.grid {
+	float: left;
+	clear: none;
+	height: auto;
+	width: 150px;
+	margin-bottom: 10px;
+	margin-right: 10px;
+}
+
+.grid img {
+	height: auto;
+	width: 150px;
+}
+
