@@ -100,7 +100,10 @@ class Product {
     checked.length === 0 ? this._$productTable
       .children('div')
       .addClass('revealed')
-      .removeClass('hidden') : this._showCheckedDataOnly(checked);
+      .removeClass('hidden')
+      .siblings('div#emptyReporter')
+      .removeClass('revealed')
+      .addClass('hidden') : this._showCheckedDataOnly(checked);
   }
 
   _showCheckedDataOnly(checked) {
@@ -110,13 +113,13 @@ class Product {
   }
 
   _showProductsThatAreAvailable(available) {
-    if (this._checkedNavigationArray.length === 0 && this._checkedColorArray.length > 0) {
+    if (!this._checkedNavigationArray.length && this._checkedColorArray.length) {
       this._showAvailableProductsByColorOnly(available);
-    } else if (this._checkedNavigationArray.length > 0 && this._checkedColorArray.length > 0) {
+    } else if (this._checkedNavigationArray.length && this._checkedColorArray.length) {
       this._showAvailableProductsByBrandAndColor(available);
-    } else if (this._checkedNavigationArray.length > 0 && this._checkedColorArray.length === 0) {
+    } else if (this._checkedNavigationArray.length && !this._checkedColorArray.length) {
       this._showAvailableProductsByBrandOnly(available);
-    } else if (this._checkedNavigationArray.length === 0 && this._checkedColorArray.length === 0) {
+    } else if (!(this._checkedNavigationArray.length || this._checkedColorArray.length)) {
       this._showAvailableProducts(available);
     }
   }
@@ -173,11 +176,11 @@ class Product {
   }
 
   _showProductsRegardlessOfAvailableStatus() {
-    if (this._checkedNavigationArray.length === 0 && this._checkedColorArray.length > 0) {
+    if (!this._checkedNavigationArray.length && this._checkedColorArray.length) {
       this._showProductsByColorOnlyRegardlessOfAvailableStatus();
-    } else if (this._checkedNavigationArray.length > 0 && this._checkedColorArray.length > 0) {
+    } else if (this._checkedNavigationArray.length && this._checkedColorArray.length) {
       this._showProductsByBrandAndColorRegardlessOfAvailableStatus();
-    } else if (this._checkedNavigationArray.length > 0 && this._checkedColorArray.length === 0) {
+    } else if (this._checkedNavigationArray.length && !this._checkedColorArray.length) {
       this._showProductsByBrandOnlyRegardlessOfAvailableStatus();
     }
   }
@@ -277,18 +280,20 @@ class Product {
   }
 
   _addObjectToGrid(theObject) {
-    const color = theObject.color;
-    const available = theObject.sold_out === '1' ? 'NO' : 'YES';
     const image = $('<img />', {
       'src': `images/${theObject.url}`,
     });
 
-    const $objectDiv = $('<div />', { 'class': 'grid', });
-    $objectDiv.addClass(theObject.brand.replace(' ', '_'));
-    $objectDiv.addClass(theObject.color);
-    $objectDiv.addClass(`product${theObject.sold_out}`);
-    $objectDiv.html(image);
+    const $objectDiv = this._createObjectDiv(theObject, image);
     this._$productTable.append($objectDiv);
+  }
+
+  _createObjectDiv(theObject, image) {
+    return $('<div />', { 'class': 'grid', })
+      .addClass(theObject.brand.replace(' ', '_'))
+      .addClass(theObject.color)
+      .addClass(`product${theObject.sold_out}`)
+      .html(image);
   }
 
   _appendRow(row) {
