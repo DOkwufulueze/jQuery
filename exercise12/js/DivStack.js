@@ -32,8 +32,7 @@ class DivStack {
     if (target.not('.emptyContainer').is('div')) {
       this._manipulateDiv(target);
     } else if (target.is('input')) {
-      this._$emptyContainer.append($('<div />', {'class': 'newDiv','html': `DIV NUMBER ${counter}`}));
-      counter += 1;
+      this._appendNewDiv();
     }
   }
 
@@ -44,6 +43,11 @@ class DivStack {
   _removeDiv(target) {
     target.remove();
     counter -= 1;
+  }
+
+  _appendNewDiv() {
+    this._$emptyContainer.append($('<div />', {'class': 'newDiv','html': `DIV NUMBER ${counter}`}));
+    counter += 1;
   }
 }
 
