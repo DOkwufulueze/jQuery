@@ -28,12 +28,12 @@ class Special {
   _bindChangeEvent() {
     this.selectItems.on('change', () => {
       const value = this.selectItems.val();
-      value === '' ? this._$targetDiv.empty() : this._checkIfJSONObjectIsCached(value);
+      !value ? this._$targetDiv.empty() : this._checkIfJSONObjectIsCached(value);
     });
   }
 
   _checkIfJSONObjectIsCached(value) {
-    if (this._$cachedReturnedObject !== null) {
+    if (this._$cachedReturnedObject) {
       this._generateHTMLForSpecial(this._$cachedReturnedObject, value)
     } else {
       this._loadAjax(value);
