@@ -50,7 +50,7 @@ class Product {
   }
 
   _addEventListenerToBody() {
-    this._$body.bind('click', (eventObject) => {
+    this._$body.on('click', (eventObject) => {
       const $target = $(eventObject.target);
       if ($target.is('input')) {
         this._useTarget($target);
