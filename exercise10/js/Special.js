@@ -33,11 +33,7 @@ class Special {
   }
 
   _checkIfJSONObjectIsCached(value) {
-    if (this._$cachedReturnedObject) {
-      this._generateHTMLForSpecial(this._$cachedReturnedObject, value)
-    } else {
-      this._loadAjax(value);
-    }
+    this._$cachedReturnedObject ? this._generateHTMLForSpecial(this._$cachedReturnedObject, value) : this._loadAjax(value);
   }
 
   _loadAjax(value) {
