@@ -17,7 +17,7 @@ class DisplayManager {
       eventObject.preventDefault();
       const $target = $(eventObject.target);
       if (this._isHeadlineClicked($target)) {
-        this._slideDownTargetExcerptAndSlideUpOthers($target);
+        this._toggleExcerpt($target);
       }
     });
   }
@@ -30,7 +30,7 @@ class DisplayManager {
     }
   }
 
-  _slideDownTargetExcerptAndSlideUpOthers(target) {
+  _toggleExcerpt(target) {
     const $targetExcerpt = target.parents('h3').siblings('p.excerpt');
     this._slideUpExcerpts(target);
     this._slideDownExcerpt($targetExcerpt);
